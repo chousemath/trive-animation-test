@@ -1,0 +1,58 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The HTML5 Herald</title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+</head>
+
+<body>
+  <img id="myImage" src="./images/sheet.png" style="display: none;">
+  <canvas id="canvas" width="400" height="800" style="position: fixed; top: 0; left: 0;">
+    Your browser does not support the HTML5 canvas tag.
+  </canvas>
+  <script>
+    "use strict";
+
+    let dummyText = 'This is some dummy text for testing purposes so please ignore me. ';
+    for (let i = 0; i < 1000; i++) dummyText += 'This is some dummy text for testing purposes so please ignore me. ';
+    document.body.append(dummyText);
+
+    let canvas;
+    let context;
+    let sprite;
+
+    const frameWidth = 400;
+    const frameHeight = 800;
+
+    const maxFrame = 29;
+    let currentFrame = 0;
+
+    window.onload = init;
+
+    function init(){
+        // Get a reference to the canvas
+        sprite = document.getElementById('myImage');
+        canvas = document.getElementById('canvas');
+        context = canvas.getContext('2d');
+        //setInterval(draw, 100);
+    }
+    function draw(goingDown) {
+      context.drawImage(sprite, currentFrame * frameWidth, 0, frameWidth, frameHeight, 0, 0, frameWidth, frameHeight);
+      if (goingDown) currentFrame++;
+      else currentFrame--;
+
+      if (currentFrame > maxFrame) currentFrame = maxFrame;
+      if (currentFrame < 0) currentFrame = 0;
+    }
+    let lastScroll = 0;
+    document.addEventListener('scroll', function(e) {
+      const {scrollY} = window;
+      draw(scrollY > lastScroll)
+      lastScroll = scrollY;
+    });
+  </script>
+</body>
+</html>
